@@ -2,7 +2,7 @@
 
 ## 3301-hash-alarm
 
-> Within the deep web; there exists a page that hashes to :
+> Within the deep web, there exists a page that hashes to :
 > ```
 > 36367763ab73783c7af284446c
 > 59466b4cd653239a311cb7116
