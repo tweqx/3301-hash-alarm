@@ -3,7 +3,11 @@
 function updateHashes(requestId, data) {
   let decoder = new TextDecoder();
 
-  console.log(currentRequests[requestId].url, decoder.decode(data));
+  let theURL = currentRequests[requestId].url;
+  let theData = decoder.decode(data);
+  console.log(theURL);
+  console.log(theData.substring(0,20), '.....', theData.slice(-20));
+  console.log(blake2bHex(theData));
 }
 
 var currentRequests = {};
