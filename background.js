@@ -1,4 +1,25 @@
 
+async function sha512digest(message, description) {
+  const msgUint8 = new TextEncoder().encode(message);
+  const hashBuffer = await crypto.subtle.digest('SHA-512', msgUint8);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  if (typeof description !== 'undefined') {
+    console.log("sha512", description, hashHex);
+  } else {
+    console.log("sha512", hashHex);
+  }
+}
+
+async function blake2bDigest(message, description) {
+  const hashHex = await blake2bHex(message);
+  if (typeof description !== 'undefined') {
+    console.log("blake2b", description, hashHex);
+  } else {
+    console.log("blake2b", hashHex);
+  }
+}
+
 // Test function
 function updateHashes(requestId, data) {
   let decoder = new TextDecoder();
@@ -7,7 +28,10 @@ function updateHashes(requestId, data) {
   let theData = decoder.decode(data);
   console.log(theURL);
   console.log(theData.substring(0,20), '.....', theData.slice(-20));
-  console.log(blake2bHex(theData));
+  sha512digest(theURL);
+  sha512digest(theData, theURL);
+  blake2bDigest(theURL);
+  blake2bDigest(theData, theURL);
 }
 
 var currentRequests = {};
