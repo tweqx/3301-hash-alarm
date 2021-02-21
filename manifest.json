@@ -1,0 +1,21 @@
+{
+  "manifest_version": 2,
+  "name": "3301-hash-alarm",
+  "version": "1.0",
+  "description": "Within the deep web; there exists a page that hashes to",
+  "icons": {
+    "48": "icon.svg",
+    "96": "icon.svg"
+  },
+
+  "permissions": [
+    "webRequest",
+    "webRequestBlocking",
+
+    "<all_urls>"
+  ],
+
+  "background": {
+    "scripts": [ "background.js" ]
+  }
+}
