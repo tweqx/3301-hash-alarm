@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "3301-hash-alarm",
   "version": "1.0",
-  "description": "Within the deep web; there exists a page that hashes to",
+  "description": "Within the deep web, there exists a page that hashes to",
   "icons": {
     "48": "icon.svg",
     "96": "icon.svg"
@@ -16,6 +16,7 @@
   ],
 
   "background": {
-    "scripts": [ "streebog-wrapped.js", "blake2b.js", "background.js" ]
+    "scripts": [ "src/hashes/streebog-wrapped.js", "src/hashes/blake2b.js",
+		 "src/webrequests.js", "background.js" ]
   }
 }
