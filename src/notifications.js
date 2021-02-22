@@ -1,14 +1,30 @@
+let notification_interval = null;
+
+function openInstructions(info) {
+  let encoded_info = JSON.stringify(info);
+  browser.tabs.create({
+    url: browser.extension.getURL("html/hash_found.html?info=" + btoa(encoded_info))
+  });
+}
+
 function notifyHashFound(info) {
-  notifyUser();
-  // Makes sure to harass the user :p
-  setInterval(notifyUser, 30000);
+  openInstructions(info);
 
-  // When the notification is clicked, open the link containing the instructions, and copy relevant information to the clipboard
+  setTimeout(() => {
+    notifyUser();
+    // Makes sure to harass the user :p
+    notification_interval = setInterval(notifyUser, 4000);
+  }, 5 * 60 * 1000);
+
+  // When the notification is clicked, open the link containing the instructions
   browser.notifications.onClicked.addListener(notificationId => {
-    browser.tabs.create({ url: "https://github.com/tweqx/3301-hash-alarm/blob/master/hash-found.md" });
+    // Pause the notification spam for 5 minutes, and then restart with a slower frequency
+    clearInterval(notification_interval);
+    setTimeout(() => {
+      notification_interval = setInterval(notifyUser, 30 * 1000);
+    }, 5 * 60 * 1000);
 
-    let encoded_info = JSON.stringify(info);
-    navigator.clipboard.writeText(btoa(encoded_info));
+    openInstructions(info);
   });
 }
 
