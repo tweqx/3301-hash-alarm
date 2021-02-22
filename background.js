@@ -1,4 +1,13 @@
 
+async function streebog512Digest(message,description){
+  const hashHex = await streebog.digestHex(message,512);
+  if (typeof description !== 'undefined') {
+    console.log("streebog512", description, hashHex);
+  } else {
+    console.log("streebog512", hashHex);
+  }
+}
+
 async function sha512digest(message, description) {
   const msgUint8 = new TextEncoder().encode(message);
   const hashBuffer = await crypto.subtle.digest('SHA-512', msgUint8);
@@ -32,6 +41,8 @@ function updateHashes(requestId, data) {
   sha512digest(theData, theURL);
   blake2bDigest(theURL);
   blake2bDigest(theData, theURL);
+  streebog512Digest(theURL);
+  streebog512Digest(theData, theURL);
 }
 
 var currentRequests = {};
