@@ -17,7 +17,7 @@ function notifyUser() {
     type: 'basic',
     title: 'Cicada 3301 - You found the deep web hash',
     message: 'Congratulations, you just found the deep web hash !\nThis hash is crutial for solving Cicada 3301\'s mystery, please consider sharing it.\n\nClick on this notification to know what to do next.',
-    iconUrl: "/icon.svg", // Doesn't work :(
+    iconUrl: browser.runtime.getURL("icon.png"),
     priority: 2, // maximum priority
 //    buttons: [ // not yet supported by firefox
 //      { 'title': 'Join the discord server' },
