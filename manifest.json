@@ -11,12 +11,16 @@
   "permissions": [
     "webRequest",
     "webRequestBlocking",
+    "notifications",
+    "tabs",
+    "clipboardWrite",
 
     "<all_urls>"
   ],
 
   "background": {
     "scripts": [ "src/hashes/streebog-wrapped.js", "src/hashes/blake2b.js",
-		 "src/webrequests.js", "background.js" ]
+		 "src/webrequests.js", "src/notifications.js", "background.js" ]
   }
 }
+

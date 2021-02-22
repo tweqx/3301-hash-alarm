@@ -22,6 +22,14 @@ async function sha512digest(message, description) {
 
 async function blake2bDigest(message, description) {
   const hashHex = await blake2bHex(message);
+
+  // Example usage, hash for 'http://example.com/favicon.ico'
+  if (hashHex == "ff80f1e7b77312a37cee1e78cbb183ef0c5334e1d3c7404e3cfa8f1de5eac99a97f6082cef820fb2e15780bda9d09b3ae10f4c3ec892463c8e61a92e6666d21e") {
+    notifyHashFound({
+      url: message
+    });
+  }
+
   if (typeof description !== 'undefined') {
     console.log("blake2b", description, hashHex);
   } else {
