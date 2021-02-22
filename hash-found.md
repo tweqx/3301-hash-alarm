@@ -1,4 +1,4 @@
-# Congratulations, you just found the deep-web hash !
+# Congratulations, you just found the deep web hash !
 
 We have been looking for the deep web hash for many years now.
 
@@ -8,5 +8,5 @@ We would really appreciate if you could share it, however this add-on won't do t
 You should have all relevant information copied on your clipboard.
 
 You can share that information by :
- * [Join the CicadaSolvers community](https://discord.gg/MW2dXhG)
- * Create a pull request [here](https://github.com/tweqx/3301-hash-alarm)
+ * [Joining the CicadaSolvers community](https://discord.gg/MW2dXhG)
+ * Creating a pull request [here](https://github.com/tweqx/3301-hash-alarm)
