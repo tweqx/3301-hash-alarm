@@ -16,6 +16,6 @@
   ],
 
   "background": {
-    "scripts": [ "blake2b.js", "background.js" ]
+    "scripts": [ "streebog-wrapped.js", "blake2b.js", "background.js" ]
   }
 }
