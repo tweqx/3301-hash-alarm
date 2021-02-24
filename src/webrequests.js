@@ -1,5 +1,8 @@
 
 const hashes = {
+  "sha3-512": async message => {
+    return await sha3.digestHex(message, 512);
+  },
   "streebog512": async message => {
     return await streebog.digestHex(message, 512);
   },
