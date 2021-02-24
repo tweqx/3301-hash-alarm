@@ -7,11 +7,7 @@ const hashes = {
     return await streebog.digestHex(message, 512);
   },
   "sha512": async message => {
-    let msgUint8 = new TextEncoder().encode(message);
-    let hashBuffer = await crypto.subtle.digest('SHA-512', msgUint8);
-    let hashArray = Array.from(new Uint8Array(hashBuffer));
-
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return await sha512(message);
   },
   "blake2b": async message => {
     return await blake2bHex(message);
