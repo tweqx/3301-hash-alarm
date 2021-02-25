@@ -4,6 +4,30 @@ const toHexString = bytes =>
   bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
 
 const hashes = {
+  "fnv512-0": {
+    init: () => fnv512.init(512,fnv512.variants.FNV_VARIANT_0),
+    update: fnv512.update.bind(fnv512),
+    final: fnv512.final.bind(fnv512),
+    cleanup: fnv512.cleanup.bind(fnv512),
+
+    digest: data => toHexString(fnv512.digest(data, 512, fnv512.variants.FNV_VARIANT_0))
+  },
+  "fnv512-1": {
+    init: () => fnv512.init(512,fnv512.variants.FNV_VARIANT_1),
+    update: fnv512.update.bind(fnv512),
+    final: fnv512.final.bind(fnv512),
+    cleanup: fnv512.cleanup.bind(fnv512),
+
+    digest: data => toHexString(fnv512.digest(data, 512, fnv512.variants.FNV_VARIANT_1))
+  },
+  "fnv512-1a": {
+    init: () => fnv512.init(512,fnv512.variants.FNV_VARIANT_1A),
+    update: fnv512.update.bind(fnv512),
+    final: fnv512.final.bind(fnv512),
+    cleanup: fnv512.cleanup.bind(fnv512),
+
+    digest: data => toHexString(fnv512.digest(data, 512, fnv512.variants.FNV_VARIANT_1A))
+  },
   "streebog512": {
     init: () => streebog.init(512),
     update: streebog.update.bind(streebog),

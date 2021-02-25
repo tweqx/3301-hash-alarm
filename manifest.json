@@ -19,7 +19,7 @@
   ],
 
   "background": {
-    "scripts": [ "src/hashes/sha3-wrapped.js", "src/hashes/streebog-wrapped.js", "src/hashes/blake2b.js", "src/hashes/sha512.js",
+    "scripts": [ "src/hashes/fnv512-wrapped.js", "src/hashes/sha3-wrapped.js", "src/hashes/streebog-wrapped.js", "src/hashes/blake2b.js", "src/hashes/sha512.js",
 		 "src/hashbox.js", "src/webrequests.js", "src/notifications.js", "background.js" ]
   }
 }
