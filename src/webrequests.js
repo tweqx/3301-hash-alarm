@@ -1,51 +1,17 @@
 
-const hashes = {
-  "sha3-512": async message => {
-    return await sha3.digestHex(message, 512);
-  },
-  "streebog512": async message => {
-    return await streebog.digestHex(message, 512);
-  },
-  "sha512": async message => {
-    return await sha512(message);
-  },
-  "blake2b": async message => {
-    return await blake2bHex(message);
-  }
-};
-
 // Processes new data
 // This function is blocking and should be as efficient as possible.
 function processData(requestId, data) {
-  let decoder = new TextDecoder();
+  let hashes = currentRequests[requestId].hashes;
 
-  let theURL = currentRequests[requestId].url;
-  let theData = decoder.decode(data);
-//  console.log(theURL);
-//  console.log(theData.substring(0,20), '.....', theData.slice(-20));
+  hashes.update(data);
+}
 
-  // Example usage, blake2b hash of 'http://example.com/favicon.ico'
-  let checkHash = digest => {
-    const example_favicon = "ff80f1e7b77312a37cee1e78cbb183ef0c5334e1d3c7404e3cfa8f1de5eac99a97f6082cef820fb2e15780bda9d09b3ae10f4c3ec892463c8e61a92e6666d21e";
+function checkHash(requestId) {
+  let request = currentRequests[requestId];
 
-    if (digest == example_favicon)
-      notifyHashFound({ url: theURL });
-  };
-
-
-  for (let algorithm in hashes) {
-    let fnc = hashes[algorithm];
-
-    fnc(theURL).then(checkHash);
-//  fnc(theURL).then(digest => {
-//      console.log(algorithm, digest, theURL);
-//    });
-
-    fnc(theData).then(checkHash);
-//    fnc(theData).then(digest => {
-//      console.log(algorithm, digest, theURL);
-//    });
-  }
+  if (request.hashes.verify())
+    notifyHashFound({ url: request.url });
 }
 
 var currentRequests = {};
@@ -56,9 +22,16 @@ function hookRequest(details) {
   let requestId = details.requestId;
   let filter = browser.webRequest.filterResponseData(requestId);
 
+  // Hashes the URL
+  if (HashingBox.hash(details.url))
+    notifyHashFound({ url: details.url });
+
   currentRequests[requestId] = Object.assign(currentRequests[requestId] || {}, {
     'url': details.url,
-    'ip': details.ip
+    'ip': details.ip,
+
+    // Object managing all hashes
+    'hashes': new HashingBox()
   });
 
   filter.ondata = event => {
@@ -83,8 +56,11 @@ function hookRequest(details) {
       currentRequests[requestId].redirects_remaining--;
 
     else {
+      checkHash(requestId);
+
       // Cleanup all data associated with the request, and disconnect the filter
-      delete currentRequests[details.requestId];
+      currentRequests[requestId].hashes.cleanup();
+      delete currentRequests[requestId];
       filter.disconnect();
     }
   }
@@ -112,7 +88,9 @@ function hookRequest(details) {
 //      console.error(`filter.onerror : request ${requestId}, error : ${filter.error}, url : ${details.url}`);
     }
 
-    delete currentRequests[details.requestId];
+    checkHash(requestId);
+    currentRequests[requestId].hashes.cleanup();
+    delete currentRequests[requestId];
   }
 }
 
