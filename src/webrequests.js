@@ -32,10 +32,11 @@ class Request {
     filter.ondata = event => {
       // A new data buffer has arrived !
 
-      request.processData(event.data);
-
       // Don't tamper with the data
       filter.write(event.data);
+
+      // Transferts ownership of the data object to the Web Worker - so we must write the data before
+      request.sendData(event.data);
     };
 
     filter.onstop = event => {
@@ -116,13 +117,14 @@ class Request {
     });
   }
 
-  processData(data) {
+  sendData(data) {
+    // Transfers the object ownership to the Web Worker, instead of making a copy of it
     hashingWorker.postMessage({
       "action": "update_request",
 
       "requestId": this.id,
       "data": data
-    });
+    }, [data]);
   }
 
   cleanup() {
