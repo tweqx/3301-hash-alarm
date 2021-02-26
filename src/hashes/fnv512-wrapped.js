@@ -1637,7 +1637,7 @@ function createExportWrapper(name, fixedasm) {
   };
 }
 
-var wasmBinaryFile = 'fnv512-wasm.wasm';
+var wasmBinaryFile = 'hashes/fnv512-wasm.wasm';
 if (!isDataURI(wasmBinaryFile)) {
   wasmBinaryFile = locateFile(wasmBinaryFile);
 }
