@@ -24,6 +24,8 @@ Currently, the following hashing algorithms are supported :
 * SHA-512
 * BLAKE2b
 * Streebog
+* SHA-3
+* FNV-0/FNV-1/FNV-1a
 
 ## License
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
