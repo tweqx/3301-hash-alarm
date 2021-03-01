@@ -26,6 +26,7 @@ Currently, the following hashing algorithms are supported :
 * Streebog
 * SHA-3
 * FNV-0/FNV-1/FNV-1a
+* Spectral Hash
 
 ## License
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)

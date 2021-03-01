@@ -3,6 +3,7 @@ importScripts("./hashes/fnv512-wrapped.js");
 importScripts("./hashes/sha3-wrapped.js");
 importScripts("./hashes/sha512.js");
 importScripts("./hashes/streebog-wrapped.js");
+importScripts("./hashes/shash-wasm.js");
 importScripts("./hashbox.js");
 
 var currentRequests = {};

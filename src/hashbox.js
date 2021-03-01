@@ -59,6 +59,14 @@ const hashes = {
     cleanup: () => {},
 
     digest: sha512
+  },
+  "shash": {
+    init: () => shash.init(512),
+    update: shash.update,
+    final: shash.final,
+    cleanup: shash.cleanup,
+
+    digest: shash.digestHex
   }
 }
 
