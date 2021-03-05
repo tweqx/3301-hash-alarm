@@ -4,6 +4,14 @@ const toHexString = bytes =>
   bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
 
 const hashes = {
+  "md6-512": {
+    init: () => md6.init(512),
+    update: md6.update.bind(md6),
+    final: md6.final.bind(md6),
+    cleanup: md6.cleanup.bind(md6),
+
+    digest: data => toHexString(md6.digest(data, 512))
+  },
   "fnv512-0": {
     init: () => fnv512.init(512,fnv512.variants.FNV_VARIANT_0),
     update: fnv512.update.bind(fnv512),
