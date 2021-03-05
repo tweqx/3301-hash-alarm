@@ -1,5 +1,6 @@
 importScripts("./hashes/blake2b.js");
 importScripts("./hashes/fnv512-wrapped.js");
+importScripts("./hashes/md6-wrapped.js");
 importScripts("./hashes/sha3-wrapped.js");
 importScripts("./hashes/sha512.js");
 importScripts("./hashes/streebog-wrapped.js");
