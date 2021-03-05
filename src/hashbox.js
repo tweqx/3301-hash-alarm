@@ -59,14 +59,18 @@ const hashes = {
     cleanup: () => {},
 
     digest: sha512
+  },
+  "grostl": {
+    init: () => grostl.init(512),
+    update: grostl.update,
+    final: grostl.final,
+    cleanup: grostl.cleanup,
+
+    digest: data => toHexString(grostl.digest(data, 512))
   }
 }
 
-// Test hash (http://example.com/favicon.ico, blake2b)
-const LP_hash = "ff80f1e7b77312a37cee1e78cbb183ef0c5334e1d3c7404e3cfa8f1de5eac99a97f6082cef820fb2e15780bda9d09b3ae10f4c3ec892463c8e61a92e6666d21e";
-// Test hash (http://example.com/ page, sha512)
-//const LP_hash = "d06b93c883f8126a04589937a884032df031b05518eed9d433efb6447834df2596aebd500d69b8283e5702d988ed49655ae654c1683c7a4ae58bfa6b92f2b73a";
-//const LP_hash = "36367763ab73783c7af284446c59466b4cd653239a311cb7116d4618dee09a8425893dc7500b464fdaf1672d7bef5e891c6e2274568926a49fb4f45132c2a8b4";
+const LP_hash = "36367763ab73783c7af284446c59466b4cd653239a311cb7116d4618dee09a8425893dc7500b464fdaf1672d7bef5e891c6e2274568926a49fb4f45132c2a8b4";
 
 // Implements an 'hashing box' : you feed it chunks of data, and when you're done, ask the box if the LP hash has been found
 class HashingBox {
