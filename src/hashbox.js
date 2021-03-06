@@ -75,6 +75,14 @@ const hashes = {
     cleanup: grostl.cleanup,
 
     digest: data => toHexString(grostl.digest(data, 512))
+  },
+  "jh": {
+    init: () => jh.init(512),
+    update: jh.update,
+    final: jh.final,
+    cleanup: jh.cleanup,
+
+    digest: data => toHexString(jh.digest(data, 512))
   }
 }
 
