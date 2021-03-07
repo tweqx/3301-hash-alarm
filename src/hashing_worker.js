@@ -7,6 +7,7 @@ importScripts("./hashes/sha512.js");
 importScripts("./hashes/streebog-wrapped.js");
 importScripts("./hashes/grostl-wasm.js");
 importScripts("./hashes/jh-wasm.js");
+importScripts("./hashes/lsh-wasm.js");
 importScripts("./hashbox.js");
 
 var currentRequests = {};

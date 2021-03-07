@@ -91,6 +91,14 @@ const hashes = {
     cleanup: jh.cleanup,
 
     digest: data => toHexString(jh.digest(data, 512))
+  },
+  "lsh": {
+    init: () => lsh.init(512),
+    update: lsh.update,
+    final: lsh.final,
+    cleanup: lsh.cleanup,
+
+    digest: data => toHexString(lsh.digest(data, 512))
   }
 }
 
