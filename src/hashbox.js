@@ -4,6 +4,14 @@ const toHexString = bytes =>
   bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, '0'), '');
 
 const hashes = {
+  "blake-512": {
+    init: () => blake.init(512),
+    update: blake.update.bind(blake),
+    final: blake.final.bind(blake),
+    cleanup: blake.cleanup.bind(blake),
+
+    digest: data => toHexString(blake.digest(data, 512))
+  },
   "md6-512": {
     init: () => md6.init(512),
     update: md6.update.bind(md6),
