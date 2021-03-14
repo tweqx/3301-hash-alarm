@@ -60,13 +60,21 @@ const hashes = {
 
     digest: data => toHexString(blake2b(data))
   },
-  "sha3-512": {
-    init: () => sha3.init(512),
+  "keccak3-512": {
+    init: () => sha3.init(512, sha3.variants.SHA3_VARIANT_KECCAK3),
     update: sha3.update.bind(sha3),
     final: sha3.final.bind(sha3),
     cleanup: sha3.cleanup.bind(sha3),
 
-    digest: data => toHexString(sha3.digest(data, 512))
+    digest: data => toHexString(sha3.digest(data, 512, sha3.variants.SHA3_VARIANT_KECCAK3))
+  },
+  "sha3-512": {
+    init: () => sha3.init(512, sha3.variants.SHA3_VARIANT_STANDARD),
+    update: sha3.update.bind(sha3),
+    final: sha3.final.bind(sha3),
+    cleanup: sha3.cleanup.bind(sha3),
+
+    digest: data => toHexString(sha3.digest(data, 512, sha3.variants.SHA3_VARIANT_STANDARD))
   },
   "sha512": {
     init: sha512.create,
