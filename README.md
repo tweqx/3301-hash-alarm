@@ -31,6 +31,8 @@ Currently, the following hashing algorithms are supported :
 * JH
 * BLAKE-512
 * LSH
+* Skein
+* Keccak3
 
 ## License
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
