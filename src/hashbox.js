@@ -107,6 +107,14 @@ const hashes = {
     cleanup: lsh.cleanup,
 
     digest: data => toHexString(lsh.digest(data, 512))
+  },
+  "skein": {
+    init: () => skein.init(512),
+    update: skein.update,
+    final: skein.final,
+    cleanup: skein.cleanup,
+
+    digest: data => toHexString(skein.digest(data, 512))
   }
 }
 
