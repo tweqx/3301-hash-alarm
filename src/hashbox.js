@@ -115,6 +115,14 @@ const hashes = {
     cleanup: skein.cleanup,
 
     digest: data => toHexString(skein.digest(data, 512))
+  },
+  "cubehash": {
+    init: () => cubehash.init(16, 16, 32, 32, 512), // CubeHash16+16/32+32–512
+    update: cubehash.update,
+    final: cubehash.final,
+    cleanup: cubehash.cleanup,
+
+    digest: data => toHexString(cubehash.digest(data, 16, 16, 32, 32, 512))
   }
 }
 
