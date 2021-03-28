@@ -10,6 +10,7 @@ importScripts("./hashes/jh-wasm.js");
 importScripts("./hashes/lsh-wasm.js");
 importScripts("./hashes/skein-wasm.js");
 importScripts("./hashes/cubehash-wasm.js");
+importScripts("./hashes/whirlpool-wasm.js");
 importScripts("./hashbox.js");
 
 var currentRequests = {};

@@ -34,6 +34,7 @@ Currently, the following hashing algorithms are supported :
 * Skein
 * Keccak3
 * CubeHash
+* Whirlpool-0/Whirlpool-T/Whirlpool
 
 ## License
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)

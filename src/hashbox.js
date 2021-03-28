@@ -123,6 +123,30 @@ const hashes = {
     cleanup: cubehash.cleanup,
 
     digest: data => toHexString(cubehash.digest(data, 16, 16, 32, 32, 512))
+  },
+  "whirlpool-0": {
+    init: () => whirlpool.init(whirlpool.WHIRLPOOL_0),
+    update: whirlpool.update,
+    final: whirlpool.final,
+    cleanup: whirlpool.cleanup,
+
+    digest: data => toHexString(cubehash.digest(data, whirlpool.WHIRLPOOL_0))
+  },
+  "whirlpool-T": {
+    init: () => whirlpool.init(whirlpool.WHIRLPOOL_T),
+    update: whirlpool.update,
+    final: whirlpool.final,
+    cleanup: whirlpool.cleanup,
+
+    digest: data => toHexString(cubehash.digest(data, whirlpool.WHIRLPOOL_T))
+  },
+  "whirlpool": {
+    init: () => whirlpool.init(whirlpool.WHIRLPOOL),
+    update: whirlpool.update,
+    final: whirlpool.final,
+    cleanup: whirlpool.cleanup,
+
+    digest: data => toHexString(cubehash.digest(data, whirlpool.WHIRLPOOL))
   }
 }
 
