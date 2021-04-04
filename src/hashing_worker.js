@@ -25,10 +25,17 @@ function foundHash(url) {
 
 onmessage = function(e) {
   let action = e.data.action;
-  let requestId = e.data.requestId;
+  let requestId;
 
   switch (action) {
+    case "hashing_mode":
+      HashingBox.setMode(e.data.mode);
+
+      break;
+
     case "init_request":
+      requestId = e.data.requestId;
+
       // Hashes the URL
       let url = e.data.url;
       if (HashingBox.hash(url))
@@ -41,10 +48,13 @@ onmessage = function(e) {
 
       break;
     case "update_request":
+      requestId = e.data.requestId;
       currentRequests[requestId].hashes.update(e.data.data);
 
       break;
     case "finalize_request":
+      requestId = e.data.requestId;
+
       if (currentRequests[requestId].hashes.verify())
         foundHash(currentRequests[requestId].url);
 

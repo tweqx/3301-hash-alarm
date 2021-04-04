@@ -152,11 +152,20 @@ const hashes = {
 
 const LP_hash = "36367763ab73783c7af284446c59466b4cd653239a311cb7116d4618dee09a8425893dc7500b464fdaf1672d7bef5e891c6e2274568926a49fb4f45132c2a8b4";
 
+var hashing_mode = "most";
+const modes = {
+  "min": ["blake-512", "jh", "skein", "grostl", "keccak3-512", "whirlpool", "sha3-512", "sha512", "blake2b"],
+  "most": ["blake-512", "jh", "skein", "grostl", "keccak3-512", "whirlpool", "sha3-512", "sha512", "blake2b",
+           "cubehash", "streebog512", "fnv512-1a", "md6-512", "lsh"],
+  "all": ["blake-512", "jh", "skein", "grostl", "keccak3-512", "whirlpool-0", "whirlpool-T", "whirlpool",
+          "sha3-512", "sha512", "blake2b", "cubehash", "streebog512", "fnv512-0", "fnv512-1", "fnv512-1a", "md6-512", "lsh"]
+};
+
 // Implements an 'hashing box' : you feed it chunks of data, and when you're done, ask the box if the LP hash has been found
 class HashingBox {
   // All-in-one method - return whether or not data hashes to the LP hash
   static hash(data) {
-    for (let algorithm in hashes) {
+    for (let algorithm of modes[hashing_mode]) {
       let alg = hashes[algorithm];
 
       if (alg.digest(data) == LP_hash)
@@ -166,17 +175,20 @@ class HashingBox {
     return false;
   }
 
+  static setMode(mode) {
+    hashing_mode = mode;
+  }
 
   constructor() {
     this.contexts = {};
 
     // Initializes the context for every hashing algorithm
-    for (let algorithm in hashes)
+    for (let algorithm of modes[hashing_mode])
       this.contexts[algorithm] = hashes[algorithm].init();
   }
 
   update(data) {
-    for (let algorithm in hashes) {
+    for (let algorithm in this.contexts) {
       let alg = hashes[algorithm];
       let ctx = this.contexts[algorithm];
 
@@ -185,7 +197,7 @@ class HashingBox {
   }
 
   verify() {
-    for (let algorithm in hashes) {
+    for (let algorithm in this.contexts) {
       let alg = hashes[algorithm];
       let ctx = this.contexts[algorithm];
 
@@ -199,7 +211,7 @@ class HashingBox {
   }
 
   cleanup() {
-    for (let algorithm in hashes) {
+    for (let algorithm in this.contexts) {
       let alg = hashes[algorithm];
       let ctx = this.contexts[algorithm];
 

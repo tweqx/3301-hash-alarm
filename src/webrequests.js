@@ -6,6 +6,24 @@ hashingWorker.onmessage = function(e) {
     notifyHashFound({ url: e.data.url });
 }
 
+// Enabling/Disabling the addon
+var should_hash = false;
+
+browser.storage.onChanged.addListener(changes => {
+  let config = changes['config'].newValue;
+
+  // Enabled ?
+  should_hash = config.enabled;
+  console.debug("hashing ?", should_hash);
+
+  // Mode
+  hashingWorker.postMessage({
+    "action": "hashing_mode",
+
+    "mode": config.mode
+  });
+});
+
 class Request {
   static get(requestId, url) {
     if (requestId in Request.all)
@@ -20,6 +38,9 @@ class Request {
 
   // Hook
   static requestsHook(details) {
+    if (!should_hash)
+      return;
+
     let request = Request.get(details.requestId, details.url);
 
     let filter = browser.webRequest.filterResponseData(request.id);
@@ -44,7 +65,19 @@ class Request {
       request.cleanup();
     }
   }
-  static hookAll() {
+  static async hookAll() {
+    // Is the add-on enabled ?
+    let data = await browser.storage.local.get('config');
+
+    should_hash = data.config.enabled;
+    console.debug("hashing ?", should_hash);
+
+    hashingWorker.postMessage({
+      "action": "hashing_mode",
+
+      "mode": data.config.mode
+    });
+
     // Requests
     browser.webRequest.onBeforeRequest.addListener(
       Request.requestsHook,

@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>3301 Hash Alarm</title>
+    <link rel="stylesheet" href="fira.css">
+    <link rel="stylesheet" href="popup.css">
+    <script src="popup.js"></script>
+  </head>
+  <body>
+    <header>3301 Hash Alarm</header>
+
+    <main>
+      <p id="title">Settings</p>
+
+      <select id="mode-selection">
+        <option value="min">Likely hashes - Low performance</option>
+        <option value="most">Most hashes - Recommended</option>
+        <option value="all">All hashes - High performance </option>
+      </select>
+      <p id="hashes-list">Loading...</p>
+
+      <div id="toggle">
+        <button id="toggle-button" class="toggled">Loading...</button>
+      </div>
+    </main>
+  </body>
+</html>
