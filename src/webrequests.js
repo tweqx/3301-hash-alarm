@@ -1,4 +1,4 @@
-
+if(typeof browser==="undefined") browser = chrome;
 const hashingWorker = new Worker(browser.extension.getURL("src/hashing_worker.js"));
 
 hashingWorker.onmessage = function(e) {
@@ -65,9 +65,23 @@ class Request {
       request.cleanup();
     }
   }
+  static getStorageItem(keyname){
+	if(typeof chrome==="undefined"){//Firefox returns a promise that is resolved when data is retrieved. items = {keyname : value, ...}
+		return browser.storage.local.get(keyname);
+	}else{//Chrome requires a callback function for when the data is retrieved: items = {keyname : value, ...}
+		return new Promise(resolve => chrome.storage.local.get(keyname, resolve));
+	}
+  }
+  static setStorageItem(entries){
+	if(typeof chrome==="undefined"){//Firefox returns a promise that is resolved when data is set
+		return browser.storage.local.set(entries);
+	}else{//Chrome requires a callback function for when the data is set
+		return new Promise(resolve => chrome.storage.local.get(entries, resolve));
+	}
+  }
   static async hookAll() {
     // Is the add-on enabled ?
-    let data = await browser.storage.local.get('config');
+    let data = await Request.getStorageItem('config');
 
     let mode = "most";
     if (data.config) {
@@ -75,7 +89,7 @@ class Request {
       mode = data.config.mode;
     }
     else
-      browser.storage.local.set({
+      Request.setStorageItem({
         'config': {
           'mode': mode, 'enabled': should_hash
         }

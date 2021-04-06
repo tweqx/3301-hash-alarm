@@ -1,3 +1,19 @@
+if(typeof browser==="undefined") browser = chrome;
+  function getStorageItem(keyname){
+	if(typeof chrome==="undefined"){//Firefox returns a promise that is resolved when data is retrieved. items = {keyname : value, ...}
+		return browser.storage.local.get(keyname);
+	}else{//Chrome requires a callback function for when the data is retrieved: items = {keyname : value, ...}
+		return new Promise(resolve => chrome.storage.local.get(keyname, resolve));
+	}
+  }
+  function setStorageItem(entries){
+	if(typeof chrome==="undefined"){//Firefox returns a promise that is resolved when data is set
+		return browser.storage.local.set(entries);
+	}else{//Chrome requires a callback function for when the data is set
+		return new Promise(resolve => chrome.storage.local.get(entries, resolve));
+	}
+  }
+
 
 function updateButton(enabled) {
   let button = document.getElementById("toggle-button");
@@ -34,11 +50,11 @@ var config = {
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Loads config from storage
-  let data = await browser.storage.local.get('config');
+  let data = await getStorageItem('config');
   if (data.config)
     config = data.config;
   else
-    browser.storage.local.set({ 'config': config });
+    setStorageItem({ 'config': config });
 
   // Updates the UI accordingly
   updateMode(config.mode);
@@ -49,12 +65,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     config.mode = ev.target.value;
 
     updateMode(config.mode);
-    browser.storage.local.set({ 'config': config });
+    setStorageItem({ 'config': config });
   });
   document.getElementById("toggle-button").addEventListener('click', () => {
     config.enabled = !config.enabled;
 
     updateButton(config.enabled);
-    browser.storage.local.set({ 'config': config });
+    setStorageItem({ 'config': config });
   });
 });
