@@ -69,13 +69,23 @@ class Request {
     // Is the add-on enabled ?
     let data = await browser.storage.local.get('config');
 
-    should_hash = data.config.enabled;
-    console.debug("hashing ?", should_hash);
+    let mode = "most";
+    if (data.config) {
+      should_hash = data.config.enabled;
+      mode = data.config.mode;
+    }
+    else
+      browser.storage.local.set({
+        'config': {
+          'mode': mode, 'enabled': should_hash
+        }
+      });
 
+    console.debug("hashing ?", should_hash);
     hashingWorker.postMessage({
       "action": "hashing_mode",
 
-      "mode": data.config.mode
+      "mode": mode
     });
 
     // Requests
