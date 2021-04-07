@@ -37,7 +37,7 @@ class Request {
   }
 
   // Hook
-  static requestsHook(details) {
+  static requestsHookFF(details) {
     if (!should_hash)
       return;
 
@@ -65,6 +65,12 @@ class Request {
       request.cleanup();
     }
   }
+  static requestsHookChrome(details) {
+	if (!should_hash)
+      return;
+	let request = Request.get(details.requestId, details.url);
+	request.sendURL();
+  }
   static getStorageItem(keyname){
 	if(typeof chrome==="undefined"){//Firefox returns a promise that is resolved when data is retrieved. items = {keyname : value, ...}
 		return browser.storage.local.get(keyname);
@@ -78,6 +84,26 @@ class Request {
 	}else{//Chrome requires a callback function for when the data is set
 		return new Promise(resolve => chrome.storage.local.set(entries, resolve));
 	}
+  }
+  static async hookFF(){
+		// Requests
+		browser.webRequest.onBeforeRequest.addListener(
+		  Request.requestsHookFF,
+
+		  // match any URL
+		  { urls: [ "<all_urls>" ] },
+		  ["blocking"]
+		);
+  }
+  static async hookChrome(){
+		browser.webRequest.onBeforeRequest.addListener(
+		  Request.requestsHookChrome,
+
+		  // match any URL
+		  { urls: [ "<all_urls>" ] }//,
+		  //["blocking"]//unsupported by Chrome
+		);
+
   }
   static async hookAll() {
     // Is the add-on enabled ?
@@ -102,14 +128,11 @@ class Request {
       "mode": mode
     });
 
-    // Requests
-    browser.webRequest.onBeforeRequest.addListener(
-      Request.requestsHook,
-
-      // match any URL
-      { urls: [ "<all_urls>" ] },
-      ["blocking"]
-    );
+	if(typeof chrome==="undefined"){//firefox
+		Request.hookFF();
+	}else{//chrome
+		Request.hookChrome();
+	}
   }
 
   constructor(requestId, url) {
@@ -118,8 +141,19 @@ class Request {
 
     this.data_transfered = false;
   }
+  sendURL() {
+    if (!this.data_transfered) {
+      hashingWorker.postMessage({
+        "action": "hash_url_only",
 
-  sendData(data) {
+        "requestId": this.id,
+        "url": this.url
+      });
+
+      this.data_transfered = true;
+    }
+  }
+  sendData(data,has_data) {
     if (!this.data_transfered) {
       hashingWorker.postMessage({
         "action": "init_request",

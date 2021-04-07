@@ -26,6 +26,7 @@ function foundHash(url) {
 onmessage = function(e) {
   let action = e.data.action;
   let requestId;
+  let url;
 
   switch (action) {
     case "hashing_mode":
@@ -33,11 +34,20 @@ onmessage = function(e) {
 
       break;
 
+    case "hash_url_only":
+      requestId = e.data.requestId;
+
+      // Hashes the URL
+      url = e.data.url;
+      if (HashingBox.hash(url))
+        foundHash(url);
+
+      break;
     case "init_request":
       requestId = e.data.requestId;
 
       // Hashes the URL
-      let url = e.data.url;
+      url = e.data.url;
       if (HashingBox.hash(url))
         foundHash(url);
 
