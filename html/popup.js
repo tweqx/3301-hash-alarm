@@ -10,7 +10,7 @@ if(typeof browser==="undefined") browser = chrome;
 	if(typeof chrome==="undefined"){//Firefox returns a promise that is resolved when data is set
 		return browser.storage.local.set(entries);
 	}else{//Chrome requires a callback function for when the data is set
-		return new Promise(resolve => chrome.storage.local.get(entries, resolve));
+		return new Promise(resolve => chrome.storage.local.set(entries, resolve));
 	}
   }
 
