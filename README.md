@@ -1,6 +1,6 @@
-# Work-In-Progress
-
 # 3301-hash-alarm
+
+[Get the add-on for Firefox 🦊 !](https://addons.mozilla.org/fr/firefox/addon/3301-hash-alarm/)
 
 On page 56 of Liber Primus, 3301's book, a message was deciphered :
 
