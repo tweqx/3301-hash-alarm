@@ -1,0 +1,13 @@
+/* DejaVu License : https://dejavu-fonts.github.io/License.html */
+
+@font-face {
+    font-family: "DejaVu Sans";
+    src: url("DejaVuSans.ttf");
+}
+
+@font-face {
+    font-family: "DejaVu Sans";
+    src: url("DejaVuSans-Bold.ttf");
+    font-weight: bold;
+}
+

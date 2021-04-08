@@ -1,5 +1,5 @@
 * {
-  font-family: sans-serif;
+  font-family: "DejaVu Sans";
   font-size: 12px;
 }
 
@@ -33,6 +33,7 @@ main {
 
 #mode-selection {
   -webkit-appearance: none; appearance: none;
+  background-color: #f6f5f4;
   border: none;
   padding: 7px 10px 7px 10px;
   margin: 0px 30px 0px 30px;
