@@ -1,6 +1,6 @@
 # 3301-hash-alarm
 
-[Get the add-on for Firefox 🦊 !](https://addons.mozilla.org/fr/firefox/addon/3301-hash-alarm/)
+[Get the add-on for Firefox 🦊 & Tor 🧅 !](https://addons.mozilla.org/en-US/firefox/addon/3301-hash-alarm/)
 
 On page 56 of Liber Primus, 3301's book, a message was deciphered :
 
@@ -35,6 +35,14 @@ Currently, the following hashing algorithms are supported :
 * Keccak3
 * CubeHash
 * Whirlpool-0/Whirlpool-T/Whirlpool
+
+## Installation
+
+You can easily install this add-on for Firefox or Tor Browser [here](https://addons.mozilla.org/en-US/firefox/addon/3301-hash-alarm/).
+
+*__Note :__ Installing unofficial extensions in Tor Browser is not recommended. Even though this add-on was designed with anonymity and security in mind, you should proceed with caution.*
+
+For development purposes, the unpackaged extension should be loaded on [about:debugging](about:debugging).
 
 ## License
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
