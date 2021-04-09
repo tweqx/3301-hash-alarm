@@ -42,7 +42,9 @@ You can easily install this add-on for Firefox or Tor Browser [here](https://add
 
 *__Note :__ Installing unofficial extensions in Tor Browser is not recommended. Even though this add-on was designed with anonymity and security in mind, you should proceed with caution.*
 
-For development purposes, the unpackaged extension should be loaded on [about:debugging](about:debugging).
+Chrome is partially supported : while URLs are hashed, content of pages isn't. Thus, the **Firefox version is recommended**. To install the add-on on chrome, unzip [the latest version](https://github.com/tweqx/3301-hash-alarm/archive/refs/heads/master.zip) in a new folder. Then, go to `chrome://extensions`, click "Load unpacked" and select the folder.
+
+For development purposes, the unpacked extension should be loaded on [about:debugging](about:debugging).
 
 ## License
 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html)
