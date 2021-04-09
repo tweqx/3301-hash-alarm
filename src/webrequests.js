@@ -1,3 +1,5 @@
+const isFF = typeof browser !== "undefined";
+if (!isFF) browser = chrome;
 
 const hashingWorker = new Worker(browser.extension.getURL("src/hashing_worker.js"));
 
@@ -37,7 +39,7 @@ class Request {
   }
 
   // Hook
-  static requestsHook(details) {
+  static requestsHookFF(details) {
     if (!should_hash)
       return;
 
@@ -65,9 +67,22 @@ class Request {
       request.cleanup();
     }
   }
+  static requestsHookChrome(details) {
+    if (!should_hash)
+      return;
+
+    // Chrome does not support reading the response data of requests ; we can only hash the url
+
+    hashingWorker.postMessage({
+      "action": "hash_single_url",
+
+      "url": details.url
+    });
+  }
+
   static async hookAll() {
     // Is the add-on enabled ?
-    let data = await browser.storage.local.get('config');
+    let data = await Storage.retrieve('config');
 
     let mode = "most";
     if (data.config) {
@@ -75,7 +90,7 @@ class Request {
       mode = data.config.mode;
     }
     else
-      browser.storage.local.set({
+      Storage.save({
         'config': {
           'mode': mode, 'enabled': should_hash
         }
@@ -89,12 +104,26 @@ class Request {
     });
 
     // Requests
+    if (isFF)
+      Request.hookFF();
+    else
+      Request.hookChrome();
+  }
+  static hookFF() {
     browser.webRequest.onBeforeRequest.addListener(
-      Request.requestsHook,
+      Request.requestsHookFF,
 
       // match any URL
       { urls: [ "<all_urls>" ] },
       ["blocking"]
+    );
+  }
+  static hookChrome() {
+    browser.webRequest.onBeforeRequest.addListener(
+      Request.requestsHookChrome,
+
+      // match any URL
+      { urls: [ "<all_urls>" ] }
     );
   }
 
@@ -104,7 +133,6 @@ class Request {
 
     this.data_transfered = false;
   }
-
   sendData(data) {
     if (!this.data_transfered) {
       hashingWorker.postMessage({

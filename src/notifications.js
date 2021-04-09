@@ -1,3 +1,5 @@
+if (typeof browser === "undefined") browser = chrome;
+
 let notification_interval = null;
 
 function openInstructions(info) {

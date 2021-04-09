@@ -25,7 +25,7 @@ function foundHash(url) {
 
 onmessage = function(e) {
   let action = e.data.action;
-  let requestId;
+  let requestId, url;
 
   switch (action) {
     case "hashing_mode":
@@ -33,11 +33,18 @@ onmessage = function(e) {
 
       break;
 
+    case "hash_single_url":
+      // Only hashes the URL sent with the message, for Chrome
+      url = e.data.url;
+      if (HashingBox.hash(url))
+        foundHash(url);
+
+      break;
     case "init_request":
       requestId = e.data.requestId;
 
       // Hashes the URL
-      let url = e.data.url;
+      url = e.data.url;
       if (HashingBox.hash(url))
         foundHash(url);
 
