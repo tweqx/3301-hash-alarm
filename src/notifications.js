@@ -1,5 +1,6 @@
+if (typeof browser === "undefined") browser = chrome;
+
 let notification_interval = null;
-if(typeof browser==="undefined") browser = chrome;
 
 function openInstructions(info) {
   let encoded_info = JSON.stringify(info);

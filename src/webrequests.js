@@ -1,4 +1,6 @@
-if(typeof browser==="undefined") browser = chrome;
+const isFF = typeof browser !== "undefined";
+if (!isFF) browser = chrome;
+
 const hashingWorker = new Worker(browser.extension.getURL("src/hashing_worker.js"));
 
 hashingWorker.onmessage = function(e) {
@@ -66,48 +68,21 @@ class Request {
     }
   }
   static requestsHookChrome(details) {
-	if (!should_hash)
+    if (!should_hash)
       return;
-	let request = Request.get(details.requestId, details.url);
-	request.sendURL();
-  }
-  static getStorageItem(keyname){
-	if(typeof chrome==="undefined"){//Firefox returns a promise that is resolved when data is retrieved. items = {keyname : value, ...}
-		return browser.storage.local.get(keyname);
-	}else{//Chrome requires a callback function for when the data is retrieved: items = {keyname : value, ...}
-		return new Promise(resolve => chrome.storage.local.get(keyname, resolve));
-	}
-  }
-  static setStorageItem(entries){
-	if(typeof chrome==="undefined"){//Firefox returns a promise that is resolved when data is set
-		return browser.storage.local.set(entries);
-	}else{//Chrome requires a callback function for when the data is set
-		return new Promise(resolve => chrome.storage.local.set(entries, resolve));
-	}
-  }
-  static async hookFF(){
-		// Requests
-		browser.webRequest.onBeforeRequest.addListener(
-		  Request.requestsHookFF,
 
-		  // match any URL
-		  { urls: [ "<all_urls>" ] },
-		  ["blocking"]
-		);
-  }
-  static async hookChrome(){
-		browser.webRequest.onBeforeRequest.addListener(
-		  Request.requestsHookChrome,
+    // Chrome does not support reading the response data of requests ; we can only hash the url
 
-		  // match any URL
-		  { urls: [ "<all_urls>" ] }//,
-		  //["blocking"]//unsupported by Chrome
-		);
+    hashingWorker.postMessage({
+      "action": "hash_single_url",
 
+      "url": details.url
+    });
   }
+
   static async hookAll() {
     // Is the add-on enabled ?
-    let data = await Request.getStorageItem('config');
+    let data = await Storage.retrieve('config');
 
     let mode = "most";
     if (data.config) {
@@ -115,7 +90,7 @@ class Request {
       mode = data.config.mode;
     }
     else
-      Request.setStorageItem({
+      Storage.save({
         'config': {
           'mode': mode, 'enabled': should_hash
         }
@@ -128,11 +103,28 @@ class Request {
       "mode": mode
     });
 
-	if(typeof chrome==="undefined"){//firefox
-		Request.hookFF();
-	}else{//chrome
-		Request.hookChrome();
-	}
+    // Requests
+    if (isFF)
+      Request.hookFF();
+    else
+      Request.hookChrome();
+  }
+  static hookFF() {
+    browser.webRequest.onBeforeRequest.addListener(
+      Request.requestsHookFF,
+
+      // match any URL
+      { urls: [ "<all_urls>" ] },
+      ["blocking"]
+    );
+  }
+  static hookChrome() {
+    browser.webRequest.onBeforeRequest.addListener(
+      Request.requestsHookChrome,
+
+      // match any URL
+      { urls: [ "<all_urls>" ] }
+    );
   }
 
   constructor(requestId, url) {
@@ -141,19 +133,7 @@ class Request {
 
     this.data_transfered = false;
   }
-  sendURL() {
-    if (!this.data_transfered) {
-      hashingWorker.postMessage({
-        "action": "hash_url_only",
-
-        "requestId": this.id,
-        "url": this.url
-      });
-
-      this.data_transfered = true;
-    }
-  }
-  sendData(data,has_data) {
+  sendData(data) {
     if (!this.data_transfered) {
       hashingWorker.postMessage({
         "action": "init_request",

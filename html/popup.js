@@ -1,19 +1,21 @@
-if(typeof browser==="undefined") browser = chrome;
-  function getStorageItem(keyname){
-	if(typeof chrome==="undefined"){//Firefox returns a promise that is resolved when data is retrieved. items = {keyname : value, ...}
-		return browser.storage.local.get(keyname);
-	}else{//Chrome requires a callback function for when the data is retrieved: items = {keyname : value, ...}
-		return new Promise(resolve => chrome.storage.local.get(keyname, resolve));
-	}
-  }
-  function setStorageItem(entries){
-	if(typeof chrome==="undefined"){//Firefox returns a promise that is resolved when data is set
-		return browser.storage.local.set(entries);
-	}else{//Chrome requires a callback function for when the data is set
-		return new Promise(resolve => chrome.storage.local.set(entries, resolve));
-	}
-  }
 
+const Storage = {
+  "retrieve": function(keyname) {
+    if (typeof chrome === "undefined")
+      return browser.storage.local.get(keyname);
+    else
+      return new Promise(resolve => chrome.storage.local.get(keyname, resolve));
+  },
+
+  "save": function(entries) {
+    if (typeof chrome === "undefined")
+      // Firefox returns a promise that is resolved when data is set
+      return browser.storage.local.set(entries);
+    else
+      // Chrome requires a callback function for when the data is set
+      return new Promise(resolve => chrome.storage.local.set(entries, resolve));
+  }
+}
 
 function updateButton(enabled) {
   let button = document.getElementById("toggle-button");
@@ -50,11 +52,11 @@ var config = {
 
 document.addEventListener("DOMContentLoaded", async () => {
   // Loads config from storage
-  let data = await getStorageItem('config');
+  let data = await Storage.retrieve('config');
   if (data.config)
     config = data.config;
   else
-    setStorageItem({ 'config': config });
+    Storage.save({ 'config': config });
 
   // Updates the UI accordingly
   updateMode(config.mode);
@@ -65,12 +67,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     config.mode = ev.target.value;
 
     updateMode(config.mode);
-    setStorageItem({ 'config': config });
+    Storage.save({ 'config': config });
   });
   document.getElementById("toggle-button").addEventListener('click', () => {
     config.enabled = !config.enabled;
 
     updateButton(config.enabled);
-    setStorageItem({ 'config': config });
+    Storage.save({ 'config': config });
   });
 });

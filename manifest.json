@@ -4,13 +4,13 @@
   "version": "1.0",
   "description": "Within the deep web, there exists a page that hashes to",
   "icons": {
-    "48": "icon.svg",
-    "96": "icon.svg"
+    "96": "icon.png",
+    "128": "icon.svg"
   },
 
   "browser_action": {
     "default_title": "3301 Hash Alarm",
-    "default_icon": "icon.svg",
+    "default_icon": "icon.png",
     "default_popup": "html/popup.html"
   },
 
@@ -25,7 +25,7 @@
   ],
 
   "background": {
-    "scripts": [ "src/webrequests.js", "src/notifications.js", "background.js" ]
+    "scripts": [ "src/storage.js", "src/webrequests.js", "src/notifications.js", "background.js" ]
   }
 }
 
