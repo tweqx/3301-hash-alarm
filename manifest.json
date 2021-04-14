@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "3301-hash-alarm",
-  "version": "1.1",
+  "version": "1.2",
   "description": "Within the deep web, there exists a page that hashes to",
   "icons": {
     "96": "icon.png",
